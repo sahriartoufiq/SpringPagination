@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <title>Persons</title>
+</head>
+<body>
+<h1> User Reg. Page</h1>
+
+<form action="#" th:action="@{/addUser}" th:object="${user}" method="post">
+
+    <ul th:if="${#fields.hasErrors('*')}">
+        <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+    </ul>
+
+
+    <table>
+        <tr>
+            <th align="right">Name:</th>
+            <td>
+                <input type="text" th:field="*{name}"/>
+            </td>
+        </tr>
+        <tr>
+            <th align="right">Email :</th>
+            <td>
+                <input type="text" th:field="*{email}"/>
+            </td>
+        </tr>
+        <tr>
+            <th align="right">Roles :</th>
+            <td>
+        <span th:each="checkboxValue: ${userRoles}">
+            <input type="checkbox" th:field="*{userRoles}" th:value="${checkboxValue}"/>
+            <label th:for="${#ids.prev('userRoles')}" th:text="${checkboxValue}"/>
+        </span>
+        </td>
+        </tr>
+    </table>
+
+    <input type="submit" name="save" value="register">
+</form>
+
+</body>
+</html>
