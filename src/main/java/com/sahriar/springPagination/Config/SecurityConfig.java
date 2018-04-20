@@ -32,14 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity https) throws Exception {
 
-        https.authorizeRequests()
-                .requestMatchers(EndpointRequest.to("userList")).hasRole("ADMIN")
-               // .requestMatchers(EndpointRequest.toAnyEndpoint()).authenticated()
-               // .antMatchers("/**").authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .formLogin()
+
+        https.authorizeRequests().antMatchers("/userList")
+                .access("hasRole('ROLE_admin')")
+                .anyRequest().permitAll().and().formLogin()
                 .loginPage("/login").failureUrl("/login?error")
                 .usernameParameter("name")
                 .passwordParameter("password")
@@ -47,13 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and().exceptionHandling().accessDeniedPage("/403")
 
-                .and().csrf().disable()
-
-			/*.and()
-            .sessionManagement()
-		    .maximumSessions(1) // How many session the same user can have? This can be any number you pick
-		    .expiredUrl("/login?logout")
-		    .sessionRegistry(sessionRegistry())*/;
+                .and().csrf().disable();
     }
 
     @Bean
