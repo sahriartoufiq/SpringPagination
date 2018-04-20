@@ -19,13 +19,15 @@ public class User {
     private Long id;
 
     @Column(name = "USER_NAME")
-    @Size(max = 20, min = 3, message = "{user.name.invalid}")
-    @NotEmpty(message = "Please Enter your name")
+    @Size(max = 20, min = 3, message = "Between 3 to 20")
     private String name;
 
+    @Column(name = "password")
+    @Size(max = 20, min = 3, message = "Between 3 to 20")
+    private String Password;
+
     @Column(name = "USER_EMAIL", unique = true)
-    @Email(message = "{user.email.invalid}")
-    @NotEmpty(message = "Please Enter your email")
+    @Email(message = "Invalid")
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL,
@@ -50,6 +52,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
     }
 
     public String getEmail() {

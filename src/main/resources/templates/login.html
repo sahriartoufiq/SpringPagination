@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Reg</title>
+</head>
+<th:block layout:fragment="breadcrumb">
+    <h1>Add User</h1>
+</th:block>
+<div layout:fragment="page_content" id="page_content">
+
+    <form action="#" th:action="@{/addUser}" th:object="${user}" method="post">
+
+        <table>
+            <tr>
+                <th align="right">Name:</th>
+                <td>
+                    <input type="text" th:field="*{name}"/>
+                </td>
+                <td>
+                    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Invalid</p>
+                </td>
+            </tr>
+
+            <tr>
+                <th align="right">Password:</th>
+                <td>
+                    <input type="password" th:field="*{Password}"/>
+                </td>
+                <td>
+                    <p class="text-danger" th:if="${#fields.hasErrors('Password')}" th:errors="*{Password}">Invalid</p>
+                </td>
+            </tr>
+
+            <tr>
+                <th></th>
+                <td>
+                    <input class="btn btn-default center" type="submit" name="save" value="login">
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<th:block layout:fragment="scripts">
+    <script type="text/javascript">
+    </script>
+</th:block>

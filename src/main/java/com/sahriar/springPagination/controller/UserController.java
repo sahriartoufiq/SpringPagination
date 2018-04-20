@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,18 +60,23 @@ public class UserController {
         return new User();
     }
 
-    @GetMapping({"/", "/regUser"})
+    @GetMapping({"/"})
     public String index(Model model) {
 
-        model.addAttribute("message", "Hello Spring MVC 5!");
         return "index";
+    }
+
+    @GetMapping({"/addUser"})
+    public String addUser(Model model) {
+
+        return "addUser";
     }
 
     @PostMapping("/addUser")
     public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "index";
+            return "addUser";
         } else {
             userService.save(user);
         }
@@ -83,16 +92,34 @@ public class UserController {
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         Page<User> users = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
-       // Page<User> users = userService.findByNamePageable("toufiq", new PageRequest(evalPage, evalPageSize));
+        // Page<User> users = userService.findByNamePageable("toufiq", new PageRequest(evalPage, evalPageSize));
 
         Pager pager = new Pager(users.getTotalPages(), users.getNumber(), BUTTONS_TO_SHOW);
 
-        log.debug("...........................");
         modelAndView.addObject("users", users);
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
         return modelAndView;
+
+    }
+
+    @GetMapping("/login")
+    public ModelAndView login(@RequestParam(value = "error", required = false) String error,
+                              @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
+
+        ModelAndView model = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if ((auth instanceof AnonymousAuthenticationToken)) {
+            if (logout != null) {
+                model.addObject("msg", "You've been logged out successfully.");
+            }
+            model.setViewName("login");
+        } else {
+            model.setViewName("redirect:/");
+        }
+
+        return model;
 
     }
 }
