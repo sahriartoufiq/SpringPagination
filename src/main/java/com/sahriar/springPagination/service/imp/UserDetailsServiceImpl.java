@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.Set;
  */
 
 @Service
+@Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -31,18 +33,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        List<User> userList = userRepo.findByName(name);
+        User user = userRepo.findByUserName(name);
 
-        logger.debug(name);
-        logger.debug(userList + "");
-        User user = null;
-        if (userList != null && userList.size() > 0) {
-            user = (User) userList.get(0);
 
-            logger.debug(user.getName()+ "-" + user.getPassword() + "-");
-
-        } else {
-            return null;
+        if(user == null){
+            throw new UsernameNotFoundException(name);
         }
         Set<GrantedAuthority> grantedAuthoritySet = buildGrantedAuthoritySet(user.getUserRoleSet());
 
@@ -58,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private UserDetails buildUserDetailsAuth(User user, Set<GrantedAuthority> authoritySet) {
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), authoritySet);
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authoritySet);
     }
 }
 

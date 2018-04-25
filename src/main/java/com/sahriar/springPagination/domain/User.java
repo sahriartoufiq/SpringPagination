@@ -18,15 +18,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "USER_NAME")
+    @Column(name = "name")
     @Size(max = 20, min = 3, message = "Between 3 to 20")
     private String name;
 
-    @Column(name = "password")
+    @Column(name = "user_name")
     @Size(max = 20, min = 3, message = "Between 3 to 20")
+    private String userName;
+
+    @Column(name = "password")
+    @Size(max = 100, min = 3, message = "Between 3 to 100")
     private String Password;
 
-    @Column(name = "USER_EMAIL", unique = true)
+    @Column(name = "user_email", unique = true)
     @Email(message = "Invalid")
     private String email;
 
@@ -37,6 +41,14 @@ public class User {
 
     @Transient
     private String[] userRoles;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Long getId() {
         return id;

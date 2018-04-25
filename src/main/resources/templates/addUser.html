@@ -21,7 +21,16 @@
                     <input type="text" th:field="*{name}"/>
                 </td>
                 <td>
-                    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Invalid</p>
+                    <label  style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Invalid</label>
+                </td>
+            </tr>
+            <tr>
+                <th align="right">User Name:</th>
+                <td>
+                    <input type="text" th:field="*{userName}"/>
+                </td>
+                <td>
+                    <label  style="color:red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Invalid</label>
                 </td>
             </tr>
             <tr>
@@ -30,16 +39,16 @@
                     <input type="text" th:field="*{email}"/>
                 </td>
                 <td>
-                    <p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Invalid</p>
+                    <label  style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Invalid</label>
                 </td>
             </tr>
             <tr>
                 <th align="right">Password:</th>
                 <td>
-                    <input type="password" th:field="*{Password}"/>
+                    <input type="password" th:field="*{password}"/>
                 </td>
                 <td>
-                    <p class="text-danger" th:if="${#fields.hasErrors('Password')}" th:errors="*{Password}">Invalid</p>
+                    <label  style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid</p>
                 </td>
             </tr>
             <tr>

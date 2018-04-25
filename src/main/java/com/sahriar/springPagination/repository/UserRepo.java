@@ -18,4 +18,6 @@ public interface UserRepo extends MyBaseRepo<User, Long> {
 
     List<User> findByName(String name);
 
+    User findByUserName(String userName);
+
 }

@@ -10,7 +10,19 @@
 <th:block layout:fragment="breadcrumb">
     <h1>Add User</h1>
 </th:block>
+
+
 <div layout:fragment="page_content" id="page_content">
+
+    <div th:if="${param.error}">
+        <label style="color:red" th:text="*{error}"></label>
+    </div>
+    <div th:if="${param.logout}">
+        <label>
+            You have been logged out.
+        </label>
+    </div>
+
 
     <form action="#" th:action="@{/login}" th:object="${user}" method="post">
 
@@ -18,20 +30,20 @@
             <tr>
                 <th align="right">Name:</th>
                 <td>
-                    <input type="text" th:field="*{name}"/>
+                    <input type="text" th:field="*{userName}"/>
                 </td>
                 <td>
-                    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Invalid</p>
+                    <p class="text-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Invalid</p>
                 </td>
             </tr>
 
             <tr>
                 <th align="right">Password:</th>
                 <td>
-                    <input type="password" th:field="*{Password}"/>
+                    <input type="password" th:field="*{password}"/>
                 </td>
                 <td>
-                    <p class="text-danger" th:if="${#fields.hasErrors('Password')}" th:errors="*{Password}">Invalid</p>
+                    <p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid</p>
                 </td>
             </tr>
 
