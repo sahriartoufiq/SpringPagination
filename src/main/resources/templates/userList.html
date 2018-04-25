@@ -24,13 +24,13 @@
                 <td th:text="${user.userName}"></td>
                 <td th:text="${user.email}"></td>
                 <td>
-                    <table>
-                        <tbody>
-                        <tr th:each="row,rowStat : ${user.userRoleSet}">
-                            <td th:text="${row.userRoles}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <!--<table class="table">-->
+                    <div class="panel panel-default">
+                        <div class="panel panel-primary" th:each="row,rowStat : ${user.userRoleSet}">
+                            <p th:text="${row.userRoles}"></p>
+                        </div>
+                    </div>
+                    <!--</table>-->
                 </td>
             </tr>
         </table>
