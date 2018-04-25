@@ -132,7 +132,7 @@ public class UserController {
 
         Exception exception = (Exception) request.getSession().getAttribute(key);
 
-        String error = "";
+        String error;
         if (exception instanceof BadCredentialsException) {
             error = "Invalid username and password!";
         } else if (exception instanceof LockedException) {
@@ -145,7 +145,7 @@ public class UserController {
     }
 
     @GetMapping("/403")
-    public String error403(Model model){
+    public String error403(Model model) {
         return "403";
     }
 }
