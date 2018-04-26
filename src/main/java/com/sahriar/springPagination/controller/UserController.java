@@ -2,12 +2,15 @@ package com.sahriar.springPagination.controller;
 
 import com.sahriar.springPagination.domain.Pager;
 import com.sahriar.springPagination.domain.User;
+import com.sahriar.springPagination.repository.MyBaseRepo;
+import com.sahriar.springPagination.repository.UserRepo;
 import com.sahriar.springPagination.service.UserService;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -43,8 +46,11 @@ public class UserController {
     private static final int INITIAL_PAGE_SIZE = 5;
     private static final int[] PAGE_SIZES = {5, 10, 20};
 
+    public int counter = 0;
+
     @Autowired
     UserService userService;
+
 
     @ModelAttribute("userRoles")
     public List<String> getUserRoles() {
@@ -101,9 +107,21 @@ public class UserController {
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
+
         return modelAndView;
 
     }
+
+    @GetMapping(value = "/userList", params = {"removeRow"})
+    public String removeUser(@RequestParam("pageSize") Optional<Integer> pageSize,
+                             @RequestParam("page") Optional<Integer> page, HttpServletRequest req) {
+        Long rowId = Long.valueOf(req.getParameter("removeRow"));
+
+        userService.removeUser(rowId);
+        return "userList";
+
+    }
+
 
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(value = "error", required = false) String error,

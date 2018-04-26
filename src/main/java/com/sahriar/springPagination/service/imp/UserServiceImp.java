@@ -5,6 +5,8 @@ import com.sahriar.springPagination.domain.UserRole;
 import com.sahriar.springPagination.repository.UserRepo;
 import com.sahriar.springPagination.repository.UserRoleRepo;
 import com.sahriar.springPagination.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,11 +14,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Created by toufiq on 4/18/18.
  */
 @Service
 public class UserServiceImp implements UserService {
+
+    public int count = 0;
+
+    ReentrantLock lock = new ReentrantLock();
 
     @Autowired
     UserRepo userRepo;
@@ -49,5 +57,15 @@ public class UserServiceImp implements UserService {
     @Transactional(readOnly = true)
     public Page<User> findByNamePageable(String name, Pageable pageable) {
         return userRepo.findByName(name, pageable);
+    }
+
+
+    @Override
+    @Transactional
+    public void removeUser(Long id) {
+
+        User user = userRepo.getOne(id);
+        userRepo.delete(user);
+
     }
 }

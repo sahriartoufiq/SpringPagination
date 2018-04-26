@@ -15,4 +15,6 @@ public interface UserService {
 
     Page<User> findByNamePageable(String name, Pageable pageable);
 
+    void removeUser(Long id);
+
 }

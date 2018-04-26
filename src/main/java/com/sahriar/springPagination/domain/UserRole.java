@@ -8,10 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "TBL_USER_ROLES")
-public class UserRole {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class UserRole extends Domain{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -19,14 +16,6 @@ public class UserRole {
 
     @Column(name = "USER_ROLE")
     private String userRoles;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public User getUser() {
         return user;

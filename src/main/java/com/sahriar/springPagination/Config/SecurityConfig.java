@@ -30,13 +30,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         https.authorizeRequests().
-                antMatchers("/", "/addUser").permitAll()
-                .antMatchers("/userList").hasAnyAuthority("admin").anyRequest().authenticated()
-                .and().formLogin()
+                antMatchers("/", "/addUser", "/resources/**").permitAll()
+                .antMatchers("/userList").hasAnyAuthority("admin")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
                 .loginPage("/login").permitAll().failureUrl("/login?error")
                 .usernameParameter("userName")
                 .passwordParameter("password")
-                .and().logout().permitAll().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
+                .and().
+                logout().permitAll().logoutUrl("/logout").logoutSuccessUrl("/login?logout").invalidateHttpSession(true)
                 .and().exceptionHandling().accessDeniedPage("/403")
                 .and().csrf().disable();
     }

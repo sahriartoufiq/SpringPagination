@@ -12,11 +12,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "TBL_USERS")
-public class User {
+public class User extends Domain{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
 
     @Column(name = "name")
     @Size(max = 20, min = 3, message = "Between 3 to 20")
@@ -48,14 +46,6 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
