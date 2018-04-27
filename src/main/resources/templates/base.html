@@ -59,6 +59,7 @@
 
     <span sec:authorize="isAuthenticated()">
                  Hi: <span sec:authentication="name"></span>
+        <!--Role: <span sec:authentication="principal.authorities"></span>-->
                 <a th:href="@{/logout}">Sign Out</a>
             </span>
 

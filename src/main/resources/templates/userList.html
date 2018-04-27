@@ -18,7 +18,8 @@
                 <th>User Name</th>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>&nbsp;</th>
+                <th>Image</th>
+                <!--<th>&nbsp;</th>-->
                 <th>&nbsp;</th>
             </tr>
             <tr th:each="user : ${users}">
@@ -34,17 +35,24 @@
                     </div>
                     <!--</table>-->
                 </td>
-
                 <td>
-                    <button type="submit" name="editRow" th:value="${user.id}">
-                        edit
-                    </button>
+                    <img width="140px" height="140px" th:src="@{'/images/'+ ${user.picLocation}}"/>
                 </td>
 
+                <!--<td>-->
+
+                <!--<a th:href="@{/userList(edit=${user.id})}">edit</a>-->
+
+                <!--&lt;!&ndash;<button type="submit" name="editRow" th:value="${user.id}">&ndash;&gt;-->
+                <!--&lt;!&ndash;edit&ndash;&gt;-->
+                <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                <!--</td>-->
+
                 <td>
-                    <button type="submit" name="removeRow" th:value="${user.id}">
-                        delete
-                    </button>
+                    <a th:href="@{/userList(remove=${user.id})}">delete</a>
+                    <!--<button type="submit" name="removeRow" th:value="${user.id}">-->
+                    <!--delete-->
+                    <!--</button>-->
                 </td>
 
             </tr>

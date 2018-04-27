@@ -1,9 +1,10 @@
 package com.sahriar.springPagination.domain;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
@@ -13,8 +14,6 @@ import java.util.Set;
 @Entity
 @Table(name = "TBL_USERS")
 public class User extends Domain{
-
-
 
     @Column(name = "name")
     @Size(max = 20, min = 3, message = "Between 3 to 20")
@@ -34,11 +33,19 @@ public class User extends Domain{
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
+            orphanRemoval = true,
             mappedBy = "user")
     private Set<UserRole> userRoleSet;
 
+    @Column(name = "pic_location")
+    private String picLocation;
+
+    @Transient
+    private MultipartFile pic;
+
     @Transient
     private String[] userRoles;
+
 
     public String getUserName() {
         return userName;
@@ -86,5 +93,21 @@ public class User extends Domain{
 
     public void setUserRoleSet(Set<UserRole> userRoleSet) {
         this.userRoleSet = userRoleSet;
+    }
+
+    public String getPicLocation() {
+        return picLocation;
+    }
+
+    public void setPicLocation(String picLocation) {
+        this.picLocation = picLocation;
+    }
+
+    public MultipartFile getPic() {
+        return pic;
+    }
+
+    public void setPic(MultipartFile pic) {
+        this.pic = pic;
     }
 }

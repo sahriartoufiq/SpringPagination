@@ -1,5 +1,6 @@
 package com.sahriar.springPagination.controller;
 
+import com.sahriar.springPagination.Storage.StorageService;
 import com.sahriar.springPagination.domain.Pager;
 import com.sahriar.springPagination.domain.User;
 import com.sahriar.springPagination.repository.MyBaseRepo;
@@ -51,6 +52,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    StorageService storageService;
 
     @ModelAttribute("userRoles")
     public List<String> getUserRoles() {
@@ -85,8 +88,15 @@ public class UserController {
         if (result.hasErrors()) {
             return "addUser";
         } else {
-            userService.save(user);
+            try {
+                storageService.store(user.getPic());
+                user.setPicLocation(user.getPic().getOriginalFilename());
+                userService.save(user);
+            }catch (Exception e){
+                log.debug("error occured");
+            }
         }
+
         return "redirect:/userList";
     }
 
@@ -99,8 +109,6 @@ public class UserController {
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         Page<User> users = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
-        // Page<User> users = userService.findByNamePageable("toufiq", new PageRequest(evalPage, evalPageSize));
-
         Pager pager = new Pager(users.getTotalPages(), users.getNumber(), BUTTONS_TO_SHOW);
 
         modelAndView.addObject("users", users);
@@ -112,12 +120,24 @@ public class UserController {
 
     }
 
-    @GetMapping(value = "/userList", params = {"removeRow"})
+    @GetMapping(value = "/userList", params = {"remove"})
     public String removeUser(@RequestParam("pageSize") Optional<Integer> pageSize,
-                             @RequestParam("page") Optional<Integer> page, HttpServletRequest req) {
-        Long rowId = Long.valueOf(req.getParameter("removeRow"));
+                             @RequestParam("page") Optional<Integer> page, HttpServletRequest req, Model model) {
+        Long rowId = Long.valueOf(req.getParameter("remove"));
 
+        log.debug("row->" + rowId);
         userService.removeUser(rowId);
+
+        int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+        int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+        Page<User> users = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
+
+        Pager pager = new Pager(users.getTotalPages(), users.getNumber(), BUTTONS_TO_SHOW);
+        model.addAttribute("users", users);
+        model.addAttribute("selectedPageSize", evalPageSize);
+        model.addAttribute("pageSizes", PAGE_SIZES);
+        model.addAttribute("pager", pager);
+
         return "userList";
 
     }

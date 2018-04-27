@@ -12,7 +12,7 @@
 </th:block>
 <div layout:fragment="page_content" id="page_content">
 
-    <form action="#" th:action="@{/addUser}" th:object="${user}" method="post">
+    <form action="#" th:action="@{/addUser}" enctype="multipart/form-data" th:object="${user}" method="post">
 
         <table>
             <tr>
@@ -21,7 +21,7 @@
                     <input type="text" th:field="*{name}"/>
                 </td>
                 <td>
-                    <label  style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Invalid</label>
+                    <label style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Invalid</label>
                 </td>
             </tr>
             <tr>
@@ -30,7 +30,8 @@
                     <input type="text" th:field="*{userName}"/>
                 </td>
                 <td>
-                    <label  style="color:red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Invalid</label>
+                    <label style="color:red" th:if="${#fields.hasErrors('userName')}"
+                           th:errors="*{userName}">Invalid</label>
                 </td>
             </tr>
             <tr>
@@ -39,7 +40,7 @@
                     <input type="text" th:field="*{email}"/>
                 </td>
                 <td>
-                    <label  style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Invalid</label>
+                    <label style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Invalid</label>
                 </td>
             </tr>
             <tr>
@@ -48,7 +49,8 @@
                     <input type="password" th:field="*{password}"/>
                 </td>
                 <td>
-                    <label  style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid</p>
+                    <label style="color:red" th:if="${#fields.hasErrors('password')}"
+                           th:errors="*{password}">Invalid</label>
                 </td>
             </tr>
             <tr>
@@ -58,6 +60,16 @@
             <input type="checkbox" th:field="*{userRoles}" th:value="${checkboxValue}"/>
             <label th:for="${#ids.prev('userRoles')}" th:text="${checkboxValue}"/>
         </span>
+                </td>
+            </tr>
+
+            <tr>
+                <th align="right">Image :</th>
+                <td>
+                    <input type="file" th:field="*{pic}"/>
+                </td>
+                <td>
+                    <label style="color:red" th:if="${#fields.hasErrors('pic')}" th:errors="*{pic}">Invalid</label>
                 </td>
             </tr>
 

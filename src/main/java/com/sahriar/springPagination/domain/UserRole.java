@@ -11,10 +11,10 @@ import javax.persistence.*;
 public class UserRole extends Domain{
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(name = "USER_ID")
     private User user;
 
-    @Column(name = "USER_ROLE")
+    @Column(name = "USER_ROLE",  nullable = false)
     private String userRoles;
 
     public User getUser() {

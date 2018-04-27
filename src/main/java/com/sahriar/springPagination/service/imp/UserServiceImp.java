@@ -22,6 +22,8 @@ import java.util.concurrent.locks.ReentrantLock;
 @Service
 public class UserServiceImp implements UserService {
 
+    Logger log = LoggerFactory.getLogger(this.getClass());
+
     public int count = 0;
 
     ReentrantLock lock = new ReentrantLock();
@@ -65,6 +67,11 @@ public class UserServiceImp implements UserService {
     public void removeUser(Long id) {
 
         User user = userRepo.getOne(id);
+
+        log.debug(user.getUserName());
+        log.debug(user.getUserRoleSet()+ "");
+
+        //userRoleRepo.deleteAll(user.getUserRoleSet());
         userRepo.delete(user);
 
     }

@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         https.authorizeRequests().
-                antMatchers("/", "/addUser", "/resources/**").permitAll()
+                antMatchers("/", "/addUser", "/resources/**", "/upload/**", "/images/**").permitAll()
                 .antMatchers("/userList").hasAnyAuthority("admin")
                 .anyRequest().authenticated()
                 .and()
@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("userName")
                 .passwordParameter("password")
                 .and().
-                logout().permitAll().logoutUrl("/logout").logoutSuccessUrl("/login?logout").invalidateHttpSession(true)
+                logout().permitAll().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
                 .and().exceptionHandling().accessDeniedPage("/403")
                 .and().csrf().disable();
     }
