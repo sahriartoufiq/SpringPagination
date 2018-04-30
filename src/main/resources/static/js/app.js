@@ -1,9 +1,14 @@
 $(document).ready(function() {
-	changePageAndSize();
+	 changePageAndSize();
+    // $('#pageSizeSelect').change(function(evt) {
+     //    window.location.replace("/userList?pageSize=" + this.value + "&page=1");
+    // });
 });
 
 function changePageAndSize() {
+
 	$('#pageSizeSelect').change(function(evt) {
-		window.location.replace("/?pageSize=" + this.value + "&page=1");
+		window.location.replace("/userList?pageSize=" + this.value + "&page=1");
+      //  alert("hi")
 	});
 }
