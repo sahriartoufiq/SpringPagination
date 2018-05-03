@@ -1,6 +1,7 @@
 package com.sahriar.springPagination.domain;
 
 
+import com.sahriar.springPagination.validatror.CompanyEmailConstarint;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -29,6 +30,7 @@ public class User extends Domain{
 
     @Column(name = "user_email", unique = true)
     @Email(message = "Invalid")
+    @CompanyEmailConstarint
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL,
