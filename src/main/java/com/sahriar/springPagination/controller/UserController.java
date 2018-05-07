@@ -1,6 +1,8 @@
 package com.sahriar.springPagination.controller;
 
 import com.sahriar.springPagination.Storage.StorageService;
+import com.sahriar.springPagination.custom.DataAccess;
+import com.sahriar.springPagination.custom.GenericDao;
 import com.sahriar.springPagination.domain.Pager;
 import com.sahriar.springPagination.domain.User;
 import com.sahriar.springPagination.repository.MyBaseRepo;
@@ -55,6 +57,9 @@ public class UserController {
     @Autowired
     StorageService storageService;
 
+    @DataAccess(entity = User.class)
+    private GenericDao userDao;
+
     @ModelAttribute("userRoles")
     public List<String> getUserRoles() {
         List<String> userRoles = new ArrayList<String>();
@@ -72,6 +77,8 @@ public class UserController {
 
     @GetMapping({"/"})
     public String index(Model model) {
+
+        log.debug(userDao.getEntityname());
 
         return "index";
     }

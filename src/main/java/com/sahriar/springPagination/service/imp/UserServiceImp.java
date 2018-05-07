@@ -39,7 +39,7 @@ public class UserServiceImp implements UserService {
 
     @Transactional
     public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEncodedPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
         UserRole userRole = null;
         for (String role : user.getUserRoles()) {

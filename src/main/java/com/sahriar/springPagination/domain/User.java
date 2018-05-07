@@ -14,7 +14,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "TBL_USERS")
-public class User extends Domain{
+public class User extends Domain {
 
     @Column(name = "name")
     @Size(max = 20, min = 3, message = "Between 3 to 20")
@@ -25,8 +25,12 @@ public class User extends Domain{
     private String userName;
 
     @Column(name = "password")
-    @Size(max = 100, min = 3, message = "Between 3 to 100")
-    private String Password;
+    //  @Size(max = 100, min = 3, message = "Between 3 to 100")
+    private String encodedPassword;
+
+    @Transient
+    @Size(max = 20, min = 3, message = "Between 3 to 20")
+    private String password;
 
     @Column(name = "user_email", unique = true)
     @Email(message = "Invalid")
@@ -35,9 +39,15 @@ public class User extends Domain{
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            orphanRemoval = true,
+            //      orphanRemoval = true,
             mappedBy = "user")
     private Set<UserRole> userRoleSet;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            //orphanRemoval = true,
+            mappedBy = "author")
+    private Set<Post> userPost;
 
     @Column(name = "pic_location")
     private String picLocation;
@@ -65,12 +75,20 @@ public class User extends Domain{
         this.name = name;
     }
 
+    public String getEncodedPassword() {
+        return encodedPassword;
+    }
+
+    public void setEncodedPassword(String encodedPassword) {
+        this.encodedPassword = encodedPassword;
+    }
+
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -111,5 +129,13 @@ public class User extends Domain{
 
     public void setPic(MultipartFile pic) {
         this.pic = pic;
+    }
+
+    public Set<Post> getUserPost() {
+        return userPost;
+    }
+
+    public void setUserPost(Set<Post> userPost) {
+        this.userPost = userPost;
     }
 }

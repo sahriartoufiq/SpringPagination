@@ -53,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private UserDetails buildUserDetailsAuth(User user, Set<GrantedAuthority> authoritySet) {
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authoritySet);
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getEncodedPassword(), authoritySet);
     }
 }
 

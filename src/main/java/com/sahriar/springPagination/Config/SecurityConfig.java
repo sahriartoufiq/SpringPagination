@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 logout().permitAll().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
                 .and().exceptionHandling().accessDeniedPage("/403")
                 .and().csrf().disable();
+
     }
 
     @Bean
