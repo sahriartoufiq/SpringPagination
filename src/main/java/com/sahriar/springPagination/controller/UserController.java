@@ -3,7 +3,9 @@ package com.sahriar.springPagination.controller;
 import com.sahriar.springPagination.Storage.StorageService;
 import com.sahriar.springPagination.custom.DataAccess;
 import com.sahriar.springPagination.custom.GenericDao;
+import com.sahriar.springPagination.domain.CustomUser;
 import com.sahriar.springPagination.domain.Pager;
+import com.sahriar.springPagination.domain.Post;
 import com.sahriar.springPagination.domain.User;
 import com.sahriar.springPagination.repository.MyBaseRepo;
 import com.sahriar.springPagination.repository.UserRepo;
@@ -99,7 +101,7 @@ public class UserController {
                 storageService.store(user.getPic());
                 user.setPicLocation(user.getPic().getOriginalFilename());
                 userService.save(user);
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.debug("error occured");
             }
         }
@@ -123,6 +125,14 @@ public class UserController {
         modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+//        String district = ((CustomUser) auth.getDetails()).getDistrict();
+
+        String district = ((CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getDistrict();
+        log.debug(district);
+
+
         return modelAndView;
 
     }
@@ -144,6 +154,7 @@ public class UserController {
         model.addAttribute("selectedPageSize", evalPageSize);
         model.addAttribute("pageSizes", PAGE_SIZES);
         model.addAttribute("pager", pager);
+
 
         return "userList";
 
@@ -189,8 +200,54 @@ public class UserController {
         return error;
     }
 
-    @GetMapping("/403")
-    public String error403(Model model) {
-        return "403";
+
+    @GetMapping("/post")
+    public String post(Model model) {
+        model.addAttribute("post", new Post());
+        return "post/post";
     }
+
+    @PostMapping("/post")
+    public String post(@Valid @ModelAttribute("post") Post post, BindingResult result, Model model) {
+        if(result.hasErrors()){
+            return "post";
+        }else{
+
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            String authorName = auth.getName();
+            userService.savePost(post, authorName);
+
+        }
+        return "post/post";
+    }
+
+
+
+    @GetMapping("/postList")
+    public ModelAndView listAllPost() {
+        ModelAndView modelAndView = new ModelAndView("post/postList");
+
+      List<Post> posts = userService.loadAllPost();
+      modelAndView.addObject("posts", posts);
+//
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//
+////        String district = ((CustomUser) auth.getDetails()).getDistrict();
+//
+//        String district = ((CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getDistrict();
+//        log.debug(district);
+
+
+        return modelAndView;
+
+    }
+
+
+
+//    @GetMapping("/403")
+//    public String error403(Model model) {
+//        return "403";
+//    }
 }

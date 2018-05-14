@@ -8,7 +8,7 @@ public class Post  extends Domain{
     @Column(name = "post_title")
     private String postTitle;
 
-    @Column()
+    @Column(name = "description")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)

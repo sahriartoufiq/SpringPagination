@@ -9,7 +9,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 
-
 <head>
 
 
@@ -54,6 +53,22 @@
           </a>
     </span>
 
+    <span class="navbar-brand mb-0 h1">
+          <a class="pageLink"
+             th:href="@{/post}">
+              Post
+          </a>
+    </span>
+
+
+    <span class="navbar-brand mb-0 h1">
+          <a class="pageLink"
+             th:href="@{/postList}">
+              PostList
+          </a>
+    </span>
+
+
     <span sec:authorize="!isAuthenticated()">
 
                 <a th:href="@{/login}">Sign In</a>
@@ -61,15 +76,16 @@
 
     <span sec:authorize="isAuthenticated()">
                  Hi: <span sec:authentication="name"></span>
+        <!--Loc: <span sec:authentication="district"></span>-->
         <!--Role: <span sec:authentication="principal.authorities"></span>-->
                 <a th:href="@{/logout}">Sign Out</a>
             </span>
 
     <!--<span class="navbar-brand mb-0 h1">-->
-          <!--<a class="pageLink"-->
-             <!--th:href="@{/logout}">-->
-              <!--logout-->
-          <!--</a>-->
+    <!--<a class="pageLink"-->
+    <!--th:href="@{/logout}">-->
+    <!--logout-->
+    <!--</a>-->
     <!--</span>-->
 
 </nav>
@@ -93,6 +109,52 @@
 
         <div layout:fragment="page_content"></div>
 
+        <div class="row" th:if="${users != null}">
+
+            <div layout:fragment="list_content">
+
+
+
+                <span th:with="currentUrl=(${#httpServletRequest.requestURI})">
+
+
+        <div th:if="${users.totalPages != 1}" class="form-group col-md-11 pagination-centered">
+
+            <ul class="pagination">
+                <li th:class="${users.number == 0} ? disabled">
+                    <a class="pageLink" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+                </li>
+                <li th:class="${users.number == 0} ? disabled">
+                    <a class="pageLink" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${users.number})}">&larr;</a>
+                </li>
+                <li th:class="${users.number == (page - 1)} ? 'active pointer-disabled'"
+                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                    <a class="pageLink" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${page})}"
+                       th:text="${page}"></a>
+                </li>
+                <li th:class="${users.number + 1 == users.totalPages} ? disabled">
+                    <a class="pageLink"
+                       th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${users.number + 2})}">&rarr;</a>
+                </li>
+                <li th:class="${users.number + 1 == users.totalPages} ? disabled">
+                    <a class="pageLink"
+                       th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${users.totalPages})}">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+
+        </span>
+
+                <div>
+                    <select id="pageSizeSelect">
+                        <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+                                th:selected="${pageSize} == ${selectedPageSize}"></option>
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
 </div>
@@ -100,19 +162,21 @@
 <!-- /.container -->
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">-->
 
-</script>
+<!--</script>-->
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">-->
 
-</script>
+<!--</script>-->
 
-<th:block layout:fragment="scripts">
-
-</th:block>
 
 </body>
 
+<th:block layout:fragment="scripts">
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/app.js}"></script>
+</th:block>
 
 </html>

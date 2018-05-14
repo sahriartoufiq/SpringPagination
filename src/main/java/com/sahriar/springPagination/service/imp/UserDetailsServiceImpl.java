@@ -1,5 +1,6 @@
 package com.sahriar.springPagination.service.imp;
 
+import com.sahriar.springPagination.domain.CustomUser;
 import com.sahriar.springPagination.domain.User;
 import com.sahriar.springPagination.domain.UserRole;
 import com.sahriar.springPagination.repository.UserRepo;
@@ -53,7 +54,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private UserDetails buildUserDetailsAuth(User user, Set<GrantedAuthority> authoritySet) {
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getEncodedPassword(), authoritySet);
+        CustomUser customUser = new CustomUser(user.getUserName(), user.getEncodedPassword(), authoritySet);
+        customUser.setDistrict("Dhaka");
+        return customUser;
+       // return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getEncodedPassword(), authoritySet);
     }
 }
 

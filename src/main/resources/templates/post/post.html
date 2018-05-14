@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head>
+    <title>Write Post</title>
+</head>
+<th:block layout:fragment="breadcrumb">
+    <h1 >Write  Post</h1>
+</th:block>
+<div layout:fragment="page_content" id="page_content">
+    <form action="#" th:action="@{/post}" th:object="${post}" method="post">
+
+        <table>
+            <tr>
+                <th align="right">Title:</th>
+                <td>
+                    <input type="text" th:field="*{postTitle}"/>
+                </td>
+                <td>
+                    <label style="color:red" th:if="${#fields.hasErrors('postTitle')}" th:errors="*{postTitle}">Invalid</label>
+                </td>
+            </tr>
+            <tr>
+                <th align="right">Description:</th>
+                <td>
+                    <input type="text" th:field="*{description}"/>
+                </td>
+                <td>
+                    <label style="color:red" th:if="${#fields.hasErrors('description')}"
+                           th:errors="*{description}">Invalid</label>
+                </td>
+            </tr>
+
+            <tr>
+                <th></th>
+                <td>
+                    <input class="btn btn-default center" type="submit" name="save" value="Save">
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+
+</div>

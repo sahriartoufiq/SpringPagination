@@ -1,7 +1,10 @@
 package com.sahriar.springPagination.service.imp;
 
+import com.sahriar.springPagination.domain.Post;
 import com.sahriar.springPagination.domain.User;
 import com.sahriar.springPagination.domain.UserRole;
+import com.sahriar.springPagination.repository.MyBaseRepo;
+import com.sahriar.springPagination.repository.PostRepo;
 import com.sahriar.springPagination.repository.UserRepo;
 import com.sahriar.springPagination.repository.UserRoleRepo;
 import com.sahriar.springPagination.service.UserService;
@@ -10,10 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -35,6 +40,10 @@ public class UserServiceImp implements UserService {
     UserRoleRepo userRoleRepo;
 
     @Autowired
+    PostRepo postRepo;
+
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -51,6 +60,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Transactional(readOnly = true)
+ //   @PostFilter("filterObject.name = authentication.name")
     public Page<User> findAllPageable(Pageable pageable) {
         return userRepo.findAll(pageable);
     }
@@ -75,4 +85,20 @@ public class UserServiceImp implements UserService {
         userRepo.delete(user);
 
     }
+
+    @Override
+    @Transactional
+    public void savePost(Post post, String author) {
+        User user = userRepo.findByUserName(author);
+        post.setAuthor(user);
+        postRepo.save(post);
+    }
+
+    @Override
+    @PostFilter("filterObject.author.userName == authentication.name")
+    public List<Post> loadAllPost() {
+        return postRepo.findAll();
+    }
+
+
 }
