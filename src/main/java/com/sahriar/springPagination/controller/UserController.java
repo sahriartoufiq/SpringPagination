@@ -45,12 +45,10 @@ import java.util.Optional;
 public class UserController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-
     private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 5;
     private static final int[] PAGE_SIZES = { 5, 10, 20};
-
     public int counter = 0;
 
     @Autowired
