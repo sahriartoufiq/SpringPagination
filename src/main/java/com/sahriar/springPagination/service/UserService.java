@@ -24,4 +24,6 @@ public interface UserService {
 
     List<Post> loadAllPost();
 
+    Page<Post> findAllPostPageable(Pageable pageable);
+
 }

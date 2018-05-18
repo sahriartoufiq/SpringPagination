@@ -3,6 +3,7 @@ package com.sahriar.springPagination.domain;
 import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"post_title", "description"}))
 public class Post  extends Domain{
 
     @Column(name = "post_title")

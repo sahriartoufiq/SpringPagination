@@ -45,6 +45,14 @@
           </a>
     </span>
 
+    <span class="navbar-brand mb-0 h1">
+          <a class="pageLink"
+             th:href="@{/post}">
+              AddPost
+          </a>
+    </span>
+
+
 
     <span class="navbar-brand mb-0 h1">
           <a class="pageLink"
@@ -52,22 +60,6 @@
               UserList
           </a>
     </span>
-
-    <span class="navbar-brand mb-0 h1">
-          <a class="pageLink"
-             th:href="@{/post}">
-              Post
-          </a>
-    </span>
-
-
-    <span class="navbar-brand mb-0 h1">
-          <a class="pageLink"
-             th:href="@{/postList}">
-              PostList
-          </a>
-    </span>
-
 
     <span sec:authorize="!isAuthenticated()">
 
@@ -109,36 +101,32 @@
 
         <div layout:fragment="page_content"></div>
 
-        <div class="row" th:if="${users != null}">
+        <div class="row" th:if="${pages != null}">
 
             <div layout:fragment="list_content">
 
-
-
                 <span th:with="currentUrl=(${#httpServletRequest.requestURI})">
 
-
-        <div th:if="${users.totalPages != 1}" class="form-group col-md-11 pagination-centered">
+        <div th:if="${pages.totalPages > 0}">
 
             <ul class="pagination">
-                <li th:class="${users.number == 0} ? disabled">
-                    <a class="pageLink" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+                <li>
+                    <a class="btn-link" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
                 </li>
-                <li th:class="${users.number == 0} ? disabled">
-                    <a class="pageLink" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${users.number})}">&larr;</a>
+                <li th:if="${pager.startPage > 1}">
+                    <a class="btn-link" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${pager.startPage - 1})}">&larr;</a>
                 </li>
-                <li th:class="${users.number == (page - 1)} ? 'active pointer-disabled'"
-                    th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
-                    <a class="pageLink" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${page})}"
+                <li th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                    <a class="btn-link" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${page})}"
                        th:text="${page}"></a>
                 </li>
-                <li th:class="${users.number + 1 == users.totalPages} ? disabled">
-                    <a class="pageLink"
-                       th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${users.number + 2})}">&rarr;</a>
+                <li th:if="${pager.endPage < pages.totalPages}">
+                    <a class="btn-link"
+                       th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${pager.endPage + 1})}">&rarr;</a>
                 </li>
-                <li th:class="${users.number + 1 == users.totalPages} ? disabled">
-                    <a class="pageLink"
-                       th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${users.totalPages})}">&raquo;</a>
+                <li>
+                    <a class="btn-link"
+                       th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${pages.totalPages})}">&raquo;</a>
                 </li>
             </ul>
         </div>

@@ -49,7 +49,7 @@ public class UserController {
     private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 5;
-    private static final int[] PAGE_SIZES = {5, 10, 20};
+    private static final int[] PAGE_SIZES = { 5, 10, 20};
 
     public int counter = 0;
 
@@ -117,24 +117,22 @@ public class UserController {
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        Page<User> users = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
-        Pager pager = new Pager(users.getTotalPages(), users.getNumber(), BUTTONS_TO_SHOW);
+        Page<User> pages = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
 
-        modelAndView.addObject("users", users);
-        modelAndView.addObject("selectedPageSize", evalPageSize);
-        modelAndView.addObject("pageSizes", PAGE_SIZES);
-        modelAndView.addObject("pager", pager);
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-//        String district = ((CustomUser) auth.getDetails()).getDistrict();
-
-        String district = ((CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getDistrict();
-        log.debug(district);
-
+        setPageable(modelAndView, pages, evalPageSize);
 
         return modelAndView;
 
+    }
+
+
+    public void setPageable(ModelAndView modelAndView, Page<?> pages, int evalPageSize) {
+        Pager pager = new Pager(pages.getTotalPages(), pages.getNumber(), BUTTONS_TO_SHOW);
+
+        modelAndView.addObject("pages", pages);
+        modelAndView.addObject("selectedPageSize", evalPageSize);
+        modelAndView.addObject("pageSizes", PAGE_SIZES);
+        modelAndView.addObject("pager", pager);
     }
 
     @GetMapping(value = "/userList", params = {"remove"})
@@ -154,6 +152,7 @@ public class UserController {
         model.addAttribute("selectedPageSize", evalPageSize);
         model.addAttribute("pageSizes", PAGE_SIZES);
         model.addAttribute("pager", pager);
+
 
 
         return "userList";
@@ -209,9 +208,9 @@ public class UserController {
 
     @PostMapping("/post")
     public String post(@Valid @ModelAttribute("post") Post post, BindingResult result, Model model) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "post";
-        }else{
+        } else {
 
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -220,30 +219,26 @@ public class UserController {
             userService.savePost(post, authorName);
 
         }
-        return "post/post";
+        return "redirect:/postList";
     }
 
 
-
     @GetMapping("/postList")
-    public ModelAndView listAllPost() {
+    public ModelAndView listAllPost(@RequestParam("pageSize") Optional<Integer> pageSize,
+                                    @RequestParam("page") Optional<Integer> page) {
         ModelAndView modelAndView = new ModelAndView("post/postList");
 
-      List<Post> posts = userService.loadAllPost();
-      modelAndView.addObject("posts", posts);
-//
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//
-////        String district = ((CustomUser) auth.getDetails()).getDistrict();
-//
-//        String district = ((CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getDistrict();
-//        log.debug(district);
+        int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+        int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
+        Page<Post> pages = userService.findAllPostPageable(new PageRequest(evalPage, evalPageSize));
+        modelAndView.addObject("posts", pages);
+
+        setPageable(modelAndView, pages, evalPageSize);
 
         return modelAndView;
 
     }
-
 
 
 //    @GetMapping("/403")

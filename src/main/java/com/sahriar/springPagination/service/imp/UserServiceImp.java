@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Transactional(readOnly = true)
- //   @PostFilter("filterObject.name = authentication.name")
+    //   @PostFilter("filterObject.name = authentication.name")
+    //  @PostAuthorize("'Dhaka' == principal.district")
     public Page<User> findAllPageable(Pageable pageable) {
         return userRepo.findAll(pageable);
     }
@@ -79,7 +81,7 @@ public class UserServiceImp implements UserService {
         User user = userRepo.getOne(id);
 
         log.debug(user.getUserName());
-        log.debug(user.getUserRoleSet()+ "");
+        log.debug(user.getUserRoleSet() + "");
 
         //userRoleRepo.deleteAll(user.getUserRoleSet());
         userRepo.delete(user);
@@ -95,9 +97,19 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    @PostFilter("filterObject.author.userName == authentication.name")
+//    @PostFilter("filterObject.author.userName == authentication.name")
+//    @PostFilter("'Dhaka' == principal.district")
+    @PostFilter("'Sylhet' == principal.district")
     public List<Post> loadAllPost() {
         return postRepo.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    //   @PostFilter("filterObject.name = authentication.name")
+    //  @PostAuthorize("'Dhaka' == principal.district")
+    public Page<Post> findAllPostPageable(Pageable pageable) {
+//        return postRepo.findByPostTitle("got", pageable);
+        return postRepo.findAll(pageable);
     }
 
 
