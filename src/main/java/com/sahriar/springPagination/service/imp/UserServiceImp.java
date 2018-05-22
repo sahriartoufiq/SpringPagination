@@ -1,6 +1,7 @@
 package com.sahriar.springPagination.service.imp;
 
 import com.sahriar.springPagination.domain.Post;
+import com.sahriar.springPagination.domain.Privilege;
 import com.sahriar.springPagination.domain.User;
 import com.sahriar.springPagination.domain.UserRole;
 import com.sahriar.springPagination.repository.MyBaseRepo;
@@ -19,7 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -52,9 +55,17 @@ public class UserServiceImp implements UserService {
         user.setEncodedPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
         UserRole userRole = null;
+
+//        Set<Privilege> privileges = new HashSet<>();
+//        for(Privilege privilege : privileges){
+//            privilege.setName("read");
+//        }
+
         for (String role : user.getUserRoles()) {
             userRole = new UserRole();
             userRole.setUser(user);
+
+
             userRole.setUserRoles(role);
             userRoleRepo.save(userRole);
         }

@@ -34,9 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by toufiq on 4/18/18.
@@ -48,7 +46,7 @@ public class UserController {
     private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 5;
-    private static final int[] PAGE_SIZES = { 5, 10, 20};
+    private static final int[] PAGE_SIZES = {5, 10, 20};
     public int counter = 0;
 
     @Autowired
@@ -67,6 +65,11 @@ public class UserController {
         userRoles.add("staff");
         userRoles.add("user");
         return userRoles;
+    }
+
+    @ModelAttribute("today")
+    public Date getNewDate(){
+        return new Date();
     }
 
 
@@ -134,29 +137,14 @@ public class UserController {
     }
 
     @GetMapping(value = "/userList", params = {"remove"})
-    public String removeUser(@RequestParam("pageSize") Optional<Integer> pageSize,
-                             @RequestParam("page") Optional<Integer> page, HttpServletRequest req, Model model) {
+    public String removeUser(HttpServletRequest req) {
         Long rowId = Long.valueOf(req.getParameter("remove"));
 
         log.debug("row->" + rowId);
         userService.removeUser(rowId);
-
-        int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
-        int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-        Page<User> users = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
-
-        Pager pager = new Pager(users.getTotalPages(), users.getNumber(), BUTTONS_TO_SHOW);
-        model.addAttribute("users", users);
-        model.addAttribute("selectedPageSize", evalPageSize);
-        model.addAttribute("pageSizes", PAGE_SIZES);
-        model.addAttribute("pager", pager);
-
-
-
-        return "userList";
+        return "redirect:/userList";
 
     }
-
 
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -237,10 +225,4 @@ public class UserController {
         return modelAndView;
 
     }
-
-
-//    @GetMapping("/403")
-//    public String error403(Model model) {
-//        return "403";
-//    }
 }
