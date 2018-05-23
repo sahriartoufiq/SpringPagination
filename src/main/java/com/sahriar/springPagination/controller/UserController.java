@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -111,6 +112,7 @@ public class UserController {
     }
 
     @GetMapping("/userList")
+    @PreAuthorize("'Dhaka' == principal.district")
     public ModelAndView listAllUser(@RequestParam("pageSize") Optional<Integer> pageSize,
                                     @RequestParam("page") Optional<Integer> page) {
         ModelAndView modelAndView = new ModelAndView("userList");
@@ -225,4 +227,7 @@ public class UserController {
         return modelAndView;
 
     }
+
+
+   // @GetMapping()
 }

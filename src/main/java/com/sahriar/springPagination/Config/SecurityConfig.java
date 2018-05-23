@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
@@ -41,10 +42,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login").permitAll().failureUrl("/login?error")
                 .usernameParameter("userName")
                 .passwordParameter("password")
-                .and().
-                logout().permitAll().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
-                .and().exceptionHandling().accessDeniedPage("/403")
-                .and().csrf().disable();
+                .and()
+                .logout().permitAll().logoutUrl("/logout").logoutSuccessUrl("/login?logout").invalidateHttpSession(true)
+                //.and()
+                //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).maximumSessions(1).maxSessionsPreventsLogin(true);
+            //    .and().sessionFixation().none()
+               // .and().exceptionHandling().accessDeniedPage("/403")
+              //  .and().csrf().disable()
+        ;
+
+//        https
+//                .sessionManagement()
+//                .maximumSessions(1)
+//                .expiredUrl("/login?expired")
+//                .maxSessionsPreventsLogin(true)
+//                .and()
+//                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+//                .invalidSessionUrl("/");
 
     }
 

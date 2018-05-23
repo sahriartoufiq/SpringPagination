@@ -21,11 +21,16 @@
 
     <!--<link rel="stylesheet" type="text/css"-->
 
-          <!--href="https://bootswatch.com/4/cerulean/bootstrap.min.css"/>-->
+    <!--href="https://bootswatch.com/4/cerulean/bootstrap.min.css"/>-->
     <!--<link rel="stylesheet" type="text/css" href="/js/app.js">-->
-    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
-    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+    <!--<link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">-->
+    <!--<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>-->
+    <!--<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>-->
+
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
@@ -37,21 +42,21 @@
             <a class="navbar-brand" href="#">Spring Pagination</a>
         </div>
 
-    <span class="navbar-brand">
+        <span class="navbar-brand">
           <a class="pageLink"
              th:href="@{/}">
               Home
           </a>
     </span>
 
-    <span class="navbar-brand">
+        <span class="navbar-brand">
           <a class="pageLink"
              th:href="@{/addUser}">
               AddUser
           </a>
     </span>
 
-    <span class="navbar-brand">
+        <span class="navbar-brand">
           <a class="pageLink"
              th:href="@{/post}">
               AddPost
@@ -59,24 +64,27 @@
     </span>
 
 
-
-    <span class="navbar-brand">
+        <span class="navbar-brand">
           <a class="pageLink"
              th:href="@{/userList}">
               UserList
           </a>
     </span>
 
-    <span class="navbar-brand" sec:authorize="!isAuthenticated()">
+        <span class="navbar-brand" sec:authorize="!isAuthenticated()">
 
                 <a class="pageLink" th:href="@{/login}">Sign In</a>
             </span>
 
-    <span class="navbar-brand" sec:authorize="isAuthenticated()">
+        <span class="navbar-brand" sec:authorize="isAuthenticated()">
                  Hi: <span sec:authentication="name"></span>
-        <!--Loc: <span sec:authentication="district"></span>-->
-        <!--Role: <span sec:authentication="principal.authorities"></span>-->
-                <a class="pageLink" th:href="@{/logout}">Sign Out</a>
+            <!--Loc: <span sec:authentication="district"></span>-->
+            <!--Role: <span sec:authentication="principal.authorities"></span>-->
+            <!--<a class="pageLink" th:href="@{/logout}">Sign Out</a>-->
+
+        <form th:action="@{/logout}" method="post">
+            <input class="pageLink" type="submit" value="logout"/>
+        </form>
 
     <br/>
         <p>
@@ -84,6 +92,7 @@
 </p>
             </span>
     </div>
+
 
     <!--<span class="navbar-brand mb-0 h1">-->
     <!--<a class="pageLink"-->
@@ -126,7 +135,8 @@
                     <a class="btn-link" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
                 </li>
                 <li th:if="${pager.startPage > 1}">
-                    <a class="btn-link" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${pager.startPage - 1})}">&larr;</a>
+                    <a class="btn-link"
+                       th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${pager.startPage - 1})}">&larr;</a>
                 </li>
                 <li th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
                     <a class="btn-link" th:href="@{${currentUrl}(pageSize=${selectedPageSize}, page=${page})}"

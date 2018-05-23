@@ -28,11 +28,11 @@
                 <td th:text="${user.email}"></td>
                 <td>
                     <!--<table class="table">-->
-                    <div class="panel panel-default">
-                        <div class="panel panel-primary" th:each="row,rowStat : ${user.userRoleSet}">
+                    <!--<div class="panel panel-default">-->
+                        <div class="panel panel-success" th:each="row,rowStat : ${user.userRoleSet}">
                             <p th:text="${row.userRoles}"></p>
                         </div>
-                    </div>
+                    <!--</div>-->
                     <!--</table>-->
                 </td>
                 <td>
