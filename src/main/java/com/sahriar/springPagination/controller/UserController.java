@@ -50,6 +50,9 @@ public class UserController {
     private static final int[] PAGE_SIZES = {5, 10, 20};
     public int counter = 0;
 
+//    @Autowired
+//    HazelcastInstance hazelcastInstance;
+
     @Autowired
     UserService userService;
 
@@ -219,10 +222,18 @@ public class UserController {
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        Page<Post> pages = userService.findAllPostPageable(new PageRequest(evalPage, evalPageSize));
+//        Page<Post> pages = userService.findAllPostPageable(new PageRequest(evalPage, evalPageSize));
+//        modelAndView.addObject("posts", pages);
+
+        String userName = ((CustomUser) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getUsername();
+        Page<Post> pages = userService.findAllPostPageableCached("", userName, new PageRequest(evalPage, evalPageSize));
         modelAndView.addObject("posts", pages);
 
         setPageable(modelAndView, pages, evalPageSize);
+//
+//        List<Post> posts = userService.loadAllPost();
+//
+//        modelAndView.addObject("posts", posts);
 
         return modelAndView;
 

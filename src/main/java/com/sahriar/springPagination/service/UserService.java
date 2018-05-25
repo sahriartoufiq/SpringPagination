@@ -26,4 +26,8 @@ public interface UserService {
 
     Page<Post> findAllPostPageable(Pageable pageable);
 
+    Page<Post> findAllPostPageableCached(String userName, Pageable pageable);
+
+    Page<Post> findAllPostPageableCached(String name, String userName, Pageable pageable);
+
 }
