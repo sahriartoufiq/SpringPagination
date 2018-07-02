@@ -36,6 +36,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created by toufiq on 4/18/18.
@@ -72,7 +75,7 @@ public class UserController {
     }
 
     @ModelAttribute("today")
-    public Date getNewDate(){
+    public Date getNewDate() {
         return new Date();
     }
 
@@ -107,7 +110,7 @@ public class UserController {
                 user.setPicLocation(user.getPic().getOriginalFilename());
                 userService.save(user);
             } catch (Exception e) {
-                log.debug("error occured");
+                log.debug("error occured.......");
             }
         }
 
@@ -115,7 +118,7 @@ public class UserController {
     }
 
     @GetMapping("/userList")
-    @PreAuthorize("'Dhaka' == principal.district")
+    // @PreAuthorize("'Dhaka' == principal.district")
     public ModelAndView listAllUser(@RequestParam("pageSize") Optional<Integer> pageSize,
                                     @RequestParam("page") Optional<Integer> page) {
         ModelAndView modelAndView = new ModelAndView("userList");
@@ -123,11 +126,92 @@ public class UserController {
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        Page<User> pages = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
+     //   Future<Page<User>> asynchPages = userService.listAllUsers(new PageRequest(evalPage, evalPageSize));
 
-        setPageable(modelAndView, pages, evalPageSize);
+        //  Page<User> pages = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
+
+        Page<User> pages = null;
+
+
+//        if (!asynchPages.isDone()) {
+//            try {
+//
+//                Thread.sleep(20L);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if (asynchPages.isDone()) {
+//            try {
+//                log.debug(".....................");
+//                pages = asynchPages.get();
+//                setPageable(modelAndView, pages, evalPageSize);
+//
+//                log.debug("............executed");
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        // Page<User> pages = asynchPages.
+
+//        setPageable(modelAndView, pages, evalPageSize);
+
+
+          CompletableFuture<Page<User>> cmPages = userService.listUsers(new PageRequest(evalPage, evalPageSize));
+
+        //CompletableFuture<Page<User>> cm = cmPages.thenApply((s) -> {});
+
+        CompletableFuture<Page<User>>  pa = cmPages.thenApply((s) -> {
+            Page<User> u = s;
+            setPageable(modelAndView, u, evalPageSize);
+            return null;
+        });
+
+
+
+//        log.debug(".....................");
+//        try {
+//            pages = asynchPages.get();
+//            setPageable(modelAndView, pages, evalPageSize);
+//
+//            log.debug("............executed");
+//        }catch (Exception e){
+//            log.debug(e.getMessage());
+//        }
+
+
+        CompletableFuture<User> completableFuture
+                = CompletableFuture.supplyAsync(() -> {
+            User s = new User();
+            s.setName("work");
+            return s;
+        });
+
+        CompletableFuture<User> future = completableFuture
+                .thenApply(s -> {
+                    s.setName(s.getName() + "ed");
+                    return s;
+                });
+
+        try {
+            log.debug(future.get().getName());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            pa.get();
+        }catch (Exception e){
+            log.debug(e.getMessage());
+        }
 
         return modelAndView;
+
 
     }
 
@@ -226,7 +310,7 @@ public class UserController {
 //        modelAndView.addObject("posts", pages);
 
         String userName = ((CustomUser) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getUsername();
-        Page<Post> pages = userService.findAllPostPageableCached("", userName, new PageRequest(evalPage, evalPageSize));
+        Page<Post> pages = userService.findAllPostPageableCached(userName, new PageRequest(evalPage, evalPageSize));
         modelAndView.addObject("posts", pages);
 
         setPageable(modelAndView, pages, evalPageSize);
@@ -240,5 +324,5 @@ public class UserController {
     }
 
 
-   // @GetMapping()
+    // @GetMapping()
 }
