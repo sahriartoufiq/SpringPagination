@@ -110,7 +110,7 @@ public class UserController {
                 user.setPicLocation(user.getPic().getOriginalFilename());
                 userService.save(user);
             } catch (Exception e) {
-                log.debug("error occured.....");
+                log.debug("error occured........");
             }
         }
 
