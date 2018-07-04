@@ -38,7 +38,7 @@ public class User extends Domain {
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             //      orphanRemoval = true,
             mappedBy = "user")
     private Set<UserRole> userRoleSet;

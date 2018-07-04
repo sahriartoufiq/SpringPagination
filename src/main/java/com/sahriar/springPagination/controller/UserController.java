@@ -12,8 +12,10 @@ import com.sahriar.springPagination.repository.UserRepo;
 import com.sahriar.springPagination.service.UserService;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
@@ -46,7 +48,9 @@ import java.util.concurrent.Future;
 @Controller
 public class UserController {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LogManager.getLogger(this.getClass());
+
+   // private final Logger log = LoggerFactory.getLogger(this.getClass());
     private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 5;
@@ -128,9 +132,16 @@ public class UserController {
 
      //   Future<Page<User>> asynchPages = userService.listAllUsers(new PageRequest(evalPage, evalPageSize));
 
-        //  Page<User> pages = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
+          Page<User> pages = userService.findAllPageable(new PageRequest(evalPage, evalPageSize));
 
-        Page<User> pages = null;
+
+          log.debug("debug.....");
+          log.info("info.....");
+          log.error("error.........");
+          //log.warn("warn...........");
+          //log.trace("trace.........");
+          //log.fatal("fatal...........");
+          //Page<User> pages = null;
 
 
 //        if (!asynchPages.isDone()) {
@@ -157,9 +168,9 @@ public class UserController {
 //        }
         // Page<User> pages = asynchPages.
 
-//        setPageable(modelAndView, pages, evalPageSize);
+        setPageable(modelAndView, pages, evalPageSize);
 
-
+/**
           CompletableFuture<Page<User>> cmPages = userService.listUsers(new PageRequest(evalPage, evalPageSize));
 
         //CompletableFuture<Page<User>> cm = cmPages.thenApply((s) -> {});
@@ -209,6 +220,8 @@ public class UserController {
         }catch (Exception e){
             log.debug(e.getMessage());
         }
+
+ **/
 
         return modelAndView;
 

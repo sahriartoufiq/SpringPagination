@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         https.authorizeRequests().
-                antMatchers("/", "/addUser", "/resources/**", "/upload/**", "/images/**", "/webjars/**").permitAll()
-                .antMatchers("/userList").hasAnyAuthority("admin")
+                antMatchers("/", "/addUser", "/resources/**", "/upload/**", "/images/**", "/webjars/**", "/css/**").permitAll()
+               // .antMatchers("/userList").hasAnyAuthority("admin")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -44,11 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .and()
                 .logout().permitAll().logoutUrl("/logout").logoutSuccessUrl("/login?logout").invalidateHttpSession(true)
-                //.and()
-                //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).maximumSessions(1).maxSessionsPreventsLogin(true);
-            //    .and().sessionFixation().none()
-               // .and().exceptionHandling().accessDeniedPage("/403")
-              //  .and().csrf().disable()
+        //.and()
+        //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).maximumSessions(1).maxSessionsPreventsLogin(true);
+        //    .and().sessionFixation().none()
+        // .and().exceptionHandling().accessDeniedPage("/403")
+        //  .and().csrf().disable()
         ;
 
 //        https
@@ -68,8 +68,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return encoder;
     }
 
-    @Bean public SecurityEvaluationContextExtension securityEvaluationContextExtension() { return new SecurityEvaluationContextExtension(); }
-
+    @Bean
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+        return new SecurityEvaluationContextExtension();
+    }
 
 
 }

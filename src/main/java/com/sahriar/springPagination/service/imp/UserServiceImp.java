@@ -14,6 +14,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -151,7 +155,7 @@ public class UserServiceImp implements UserService {
         if (((CustomUser) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getUsername().equals("sahriar")) {
             return postRepo.findAll(pageable);
         } else {
-            return postRepo.findByPostTitle("got", pageable);
+            return postRepo.findByPostTitle("Mis", pageable);
         }
     }
 
@@ -165,5 +169,22 @@ public class UserServiceImp implements UserService {
             return postRepo.findByPostTitle("got", pageable);
         }
     }
+
+
+    @Async
+    public Future<Page<User>> listAllUsers(Pageable pageable){
+
+        return new AsyncResult<Page<User>>(userRepo.findAll(pageable));
+
+    }
+
+
+
+    @Async
+    public CompletableFuture<Page<User>> listUsers(Pageable pageable){
+        CompletableFuture<Page<User>> completableFuture =  CompletableFuture.supplyAsync(() -> userRepo.findAll(pageable));
+        return completableFuture;
+    }
+
 
 }

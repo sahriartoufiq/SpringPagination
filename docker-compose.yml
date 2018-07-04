@@ -72,5 +72,5 @@ services:
 
 
 
-sudo docker  run --name=sp -e "SPRING_PROFILES_ACTIVE=container" -p 8888:8888 springpagination
+#sudo docker  run --name=sp -e "SPRING_PROFILES_ACTIVE=container" -p 8888:8888 springpagination
 
