@@ -323,6 +323,10 @@ public class UserController {
          evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
          evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
+
+        evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+        evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+
 //        Page<Post> pages = userService.findAllPostPageable(new PageRequest(evalPage, evalPageSize));
 //        modelAndView.addObject("posts", pages);
 
