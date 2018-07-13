@@ -137,7 +137,8 @@ public class UserController {
 
           log.debug("debug.....");
           log.info("info.....");
-          log.error("error.........");
+          log.error("error occured send it via loggly alert.........");
+          log.error("severe............");
           //log.warn("warn...........");
           //log.trace("trace.........");
           //log.fatal("fatal...........");
@@ -319,6 +320,9 @@ public class UserController {
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
+         evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+         evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+
 //        Page<Post> pages = userService.findAllPostPageable(new PageRequest(evalPage, evalPageSize));
 //        modelAndView.addObject("posts", pages);
 
@@ -336,6 +340,4 @@ public class UserController {
 
     }
 
-
-    // @GetMapping()
 }
