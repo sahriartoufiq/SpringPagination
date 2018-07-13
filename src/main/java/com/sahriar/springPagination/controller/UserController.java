@@ -312,6 +312,9 @@ public class UserController {
         return "redirect:/postList";
     }
 
+    public void print(){
+        log.debug("print");
+    }
 
     @GetMapping("/postList")
     public ModelAndView listAllPost(@RequestParam("pageSize") Optional<Integer> pageSize,
