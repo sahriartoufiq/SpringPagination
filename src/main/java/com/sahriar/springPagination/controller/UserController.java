@@ -313,7 +313,7 @@ public class UserController {
     }
 
     public void print(){
-        log.debug("print");
+        log.debug("print...........");
     }
 
     @GetMapping("/postList")
