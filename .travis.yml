@@ -14,3 +14,10 @@ cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
+
+    notifications:
+      email:
+        recipients:
+          - sahriartoufiq@example.com
+        on_success: always # default: change
+        on_failure: always # default: always
