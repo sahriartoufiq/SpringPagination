@@ -302,6 +302,7 @@ public class UserController {
         } else {
 
 
+            log.debug("test");
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
             String authorName = auth.getName();
