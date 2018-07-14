@@ -137,7 +137,7 @@ public class UserController {
 
           log.debug("debug.....");
           log.info("info.....");
-          log.error("error occured send it via loggly alert.........");
+          log.error("error occured send it via loggly alert.................................");
           log.error("severe............");
           //log.warn("warn...........");
           //log.trace("trace.........");
