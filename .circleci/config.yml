@@ -40,7 +40,7 @@ jobs:
       # run tests!
       #- run: mvn integration-test
 
-      run : mvn clean package sonar:sonar \
+     - run : mvn clean package sonar:sonar \
               -Dsonar.host.url=http://1ae24205.ngrok.io \
               -Dsonar.login=a24dc6653676e446738698a4500f2c2589112c01
 
