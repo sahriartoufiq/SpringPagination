@@ -9,12 +9,10 @@ install: true
 jdk:
   - oraclejdk8
 script:
-script:
-  - mvn sonar:sonar \
+  - mvn clean package sonar:sonar \
       -Dsonar.host.url=http://1ae24205.ngrok.io \
       -Dsonar.login=fc0f1f6ab05f20131cdfb7a275c1ab318c3fdd5e
 #  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
 cache:
   directories:
     - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
