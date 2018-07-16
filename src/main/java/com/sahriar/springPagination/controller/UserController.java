@@ -94,7 +94,7 @@ public class UserController {
 
         log.debug(userDao.getEntityname());
 
-        return "index";
+        return "index....";
     }
 
     @GetMapping({"/addUser"})
@@ -114,7 +114,7 @@ public class UserController {
                 user.setPicLocation(user.getPic().getOriginalFilename());
                 userService.save(user);
             } catch (Exception e) {
-                log.debug("error occured........");
+                log.debug("error occured....................");
             }
         }
 
@@ -136,8 +136,8 @@ public class UserController {
 
 
           log.debug("debug.....");
-          log.info("info.....");
-          log.error("error occured send it via loggly alert.........");
+          log.info("info..................................");
+          log.error("error occured send it via loggly alert...................");
           log.error("severe............");
           //log.warn("warn...........");
           //log.trace("trace.........");
@@ -313,7 +313,7 @@ public class UserController {
     }
 
     public void print(){
-        log.debug("print...........");
+        log.debug("print....................");
     }
 
     @GetMapping("/postList")
@@ -323,6 +323,12 @@ public class UserController {
 
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+
+        evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+        evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+
+        evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+        evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
