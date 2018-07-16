@@ -14,7 +14,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-    working_directory: ~/repo
+    working_directory: ~/SpringPagination
 
     environment:
       # Customize the JVM maximum heap limit
@@ -29,18 +29,17 @@ jobs:
 #          - v1-dependencies-{{ checksum "pom.xml" }}
 #          # fallback to using the latest cache if no exact match is found
 #          - v1-dependencies-
-#
-#      - run: mvn dependency:go-offline
-#
-#      - save_cache:
-#          paths:
-#            - ~/.m2
-#          key: v1-dependencies-{{ checksum "pom.xml" }}
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
 
       # run tests!
-      #- run: mvn integration-test
-
-     - run : mvn clean package sonar:sonar \
-              -Dsonar.host.url=http://1ae24205.ngrok.io \
-              -Dsonar.login=a24dc6653676e446738698a4500f2c2589112c01
+      - run: mvn integration-test
+      - run: mvn mvn clean package sonar:sonar \
+                               -Dsonar.host.url=http://1ae24205.ngrok.io \
+                               -Dsonar.login=a24dc6653676e446738698a4500f2c2589112c01
 
