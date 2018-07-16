@@ -177,11 +177,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.github.sgoertzen/sonar-break-maven-plugin -->
-        <!--<dependency>-->
-            <!--<groupId>com.github.sgoertzen</groupId>-->
-            <!--<artifactId>sonar-break-maven-plugin</artifactId>-->
-            <!--<version>1.2.5</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.github.sgoertzen</groupId>
+            <artifactId>sonar-break-maven-plugin</artifactId>
+            <version>1.2.5</version>
+        </dependency>
 
 
     </dependencies>
@@ -208,11 +208,11 @@
             <!--</plugin>-->
 
 
-            <!--<plugin>-->
-                <!--<groupId>org.sonarsource.scanner.maven</groupId>-->
-                <!--<artifactId>sonar-maven-plugin</artifactId>-->
-                <!--<version>3.4.0.905</version>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.4.0.905</version>
+            </plugin>
 
 
         </plugins>
