@@ -24,11 +24,11 @@ jobs:
       - checkout
 
       # Download and cache dependencies
-#      - restore_cache:
-#          keys:
-#          - v1-dependencies-{{ checksum "pom.xml" }}
-#          # fallback to using the latest cache if no exact match is found
-#          - v1-dependencies-
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
 
       - run: mvn dependency:go-offline
 
@@ -39,7 +39,5 @@ jobs:
 
       # run tests!
       - run: mvn integration-test
-      - run: mvn mvn clean package sonar:sonar \
-                               -Dsonar.host.url=http://1ae24205.ngrok.io \
-                               -Dsonar.login=a24dc6653676e446738698a4500f2c2589112c01
+      - run: mvn sonar:sonar -Dsonar.host.url=http://1ae24205.ngrok.io -Dsonar.login=a24dc6653676e446738698a4500f2c2589112c01
 
