@@ -13,8 +13,11 @@ addons:
 jdk:
   - oraclejdk8
 script:
-  - sonar-scanner
-  - mvn sonar:sonar
+mvn sonar:sonar \
+  -Dsonar.host.url=http://1ae24205.ngrok.io \
+  -Dsonar.login=a24dc6653676e446738698a4500f2c2589112c01
+#  - sonar-scanner
+ # - mvn sonar:sonar
 #   -Dsonar.host.url=http://1ae24205.ngrok.io \
 #      -Dsonar.host.url=http://1ae24205.ngrok.io \
 #      -Dsonar.login=fc0f1f6ab05f20131cdfb7a275c1ab318c3fdd5e
